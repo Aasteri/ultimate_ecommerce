@@ -1,0 +1,1123 @@
+/* Deep website layout system — html[data-layout] + section-scoped media */
+
+:root {
+  --layout-bg-image: none;
+  --layout-bg-overlay: 0;
+  --layout-bg-count: 0;
+  --surface-overlay: 0.45;
+}
+
+/* ========== Section-scoped media (not full-page overlays) ========== */
+.surface-media {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.surface-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: color-mix(in srgb, var(--bg) calc(var(--surface-overlay) * 100%), transparent);
+}
+
+.surface-slide,
+.surface-wash,
+.surface-pane,
+.surface-tile,
+.surface-strip,
+.surface-layer {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.surface-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: scale(1.06);
+  transition: opacity 1.2s ease, transform 7s ease;
+  z-index: 1;
+}
+.surface-slide.is-active {
+  opacity: 1;
+  transform: scale(1);
+}
+.mode-slideshow .surface-slide.is-active {
+  animation: layout-kenburns 14s ease-in-out infinite alternate;
+}
+@keyframes layout-kenburns {
+  from { transform: scale(1) translate3d(0, 0, 0); }
+  to { transform: scale(1.1) translate3d(-1.2%, -0.8%, 0); }
+}
+
+.surface-wash {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  transform: scale(1.04);
+}
+
+.surface-strips {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3px;
+  z-index: 1;
+}
+.surface-strip {
+  min-height: 100%;
+  transition: filter 0.6s ease, transform 0.6s ease;
+}
+.surface-strip.is-pulse {
+  filter: saturate(1.2) contrast(1.08);
+  transform: scale(1.03);
+}
+
+.surface-mosaic {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 1fr;
+  gap: 4px;
+  z-index: 1;
+}
+.surface-tile { min-height: 120px; }
+
+.surface-split {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  gap: 4px;
+  z-index: 1;
+}
+.surface-split.split-2 { grid-template-columns: 1.15fr 0.85fr; }
+.surface-split.split-3 { grid-template-columns: 1fr 1fr 1fr; }
+.surface-split.split-4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+.surface-pane { min-height: 50%; }
+
+.mode-layers .surface-layer {
+  position: absolute;
+  inset: -6%;
+  z-index: 1;
+  opacity: 0.55;
+  animation: layout-drift 22s ease-in-out infinite alternate;
+}
+.mode-layers .layer-0 { opacity: 0.95; }
+.mode-layers .layer-1 { clip-path: inset(0 0 38% 0); opacity: 0.65; animation-delay: -4s; }
+.mode-layers .layer-2 { clip-path: inset(42% 0 0 28%); opacity: 0.5; animation-delay: -8s; }
+.mode-layers .layer-3 { clip-path: inset(12% 42% 28% 0); opacity: 0.45; animation-delay: -2s; }
+.mode-layers .layer-4 { clip-path: circle(26% at 78% 70%); opacity: 0.5; }
+@keyframes layout-drift {
+  from { transform: translate3d(-1.5%, -1%, 0) scale(1.04); }
+  to { transform: translate3d(1.5%, 1%, 0) scale(1.1); }
+}
+
+/* Surface hosts */
+.home-section-media,
+.home-lookbook,
+.home-cta-media-wrap {
+  position: relative;
+  overflow: hidden;
+}
+
+.home-section-media-inner,
+.home-lookbook-copy,
+.home-cta-media-wrap .home-cta {
+  position: relative;
+  z-index: 1;
+}
+
+.home-lookbook {
+  min-height: min(42vh, 420px);
+  display: flex;
+  align-items: flex-end;
+  margin: 24px 0;
+}
+.home-lookbook .surface-media {
+  inset: 0;
+}
+.home-lookbook-copy {
+  padding: 40px 0;
+  color: var(--text);
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.25);
+}
+.home-lookbook-kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.home-lookbook .surface-veil {
+  background: linear-gradient(180deg, transparent 10%, color-mix(in srgb, var(--bg) 78%, transparent) 100%);
+}
+
+.home-section-media .surface-veil {
+  background: color-mix(in srgb, var(--bg) 72%, transparent);
+}
+.newsletter-section.home-section-media .surface-veil {
+  background: color-mix(in srgb, var(--primary) 55%, rgba(0, 0, 0, 0.35));
+}
+
+.home-cta-media-wrap {
+  border-radius: var(--radius);
+  padding: 28px;
+  min-height: 180px;
+  display: flex;
+  align-items: stretch;
+}
+.home-cta-media-wrap .home-cta {
+  width: 100%;
+  background: color-mix(in srgb, var(--bg-card) 92%, transparent) !important;
+  backdrop-filter: blur(10px);
+  margin: 0;
+}
+.home-cta-media-wrap .surface-veil {
+  background: color-mix(in srgb, var(--bg) 45%, transparent);
+}
+
+/* Hero keeps its own media; default gradient shows when no SurfaceMedia */
+.hero-bg > .surface-media {
+  inset: 0;
+}
+.hero-bg > .surface-media + .surface-media { display: none; }
+
+html[data-layout='cinema'] .hero .surface-veil,
+html[data-layout='runway'] .hero .surface-veil,
+html[data-layout='split_stage'] .hero .surface-veil {
+  background: linear-gradient(95deg, color-mix(in srgb, var(--bg) 88%, transparent) 0%, color-mix(in srgb, var(--bg) 35%, transparent) 55%, color-mix(in srgb, var(--bg) 20%, transparent));
+}
+html[data-layout='boutique'] .hero .surface-veil,
+html[data-layout='parallax_loom'] .hero .surface-veil {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--bg) 35%, transparent), color-mix(in srgb, var(--bg) 78%, transparent));
+}
+html[data-layout='gallery_wall'] .hero .surface-veil {
+  background: color-mix(in srgb, var(--bg) 55%, transparent);
+}
+
+/* Image layouts keep normal page canvas — media is sectional only */
+html[data-layout='cinema'] .site-shell,
+html[data-layout='runway'] .site-shell,
+html[data-layout='boutique'] .site-shell,
+html[data-layout='gallery_wall'] .site-shell,
+html[data-layout='split_stage'] .site-shell,
+html[data-layout='parallax_loom'] .site-shell {
+  background: var(--bg);
+}
+
+html[data-layout='cinema'] .site-main,
+html[data-layout='runway'] .site-main,
+html[data-layout='boutique'] .site-main,
+html[data-layout='gallery_wall'] .site-main,
+html[data-layout='split_stage'] .site-main,
+html[data-layout='parallax_loom'] .site-main {
+  background: var(--bg);
+}
+
+/* ========== GLASS (deep) ========== */
+html[data-layout='glass'] body {
+  background:
+    radial-gradient(1100px 700px at -5% -10%, color-mix(in srgb, var(--primary) 40%, transparent), transparent 55%),
+    radial-gradient(900px 600px at 105% 0%, color-mix(in srgb, var(--accent) 42%, transparent), transparent 50%),
+    radial-gradient(700px 500px at 50% 110%, color-mix(in srgb, var(--theme-accent-3) 30%, transparent), transparent 55%),
+    linear-gradient(165deg, var(--bg), color-mix(in srgb, var(--bg-muted) 75%, var(--bg)));
+  background-attachment: fixed;
+}
+html[data-layout='glass'] .site-header,
+html[data-layout='glass'] .site-footer,
+html[data-layout='glass'] .card,
+html[data-layout='glass'] .hero-card,
+html[data-layout='glass'] .category-card,
+html[data-layout='glass'] .step-card,
+html[data-layout='glass'] .product-card,
+html[data-layout='glass'] .toast,
+html[data-layout='glass'] .search-select-list,
+html[data-layout='glass'] .admin-sidebar {
+  background: color-mix(in srgb, var(--bg-card) 42%, transparent) !important;
+  backdrop-filter: blur(22px) saturate(1.55);
+  -webkit-backdrop-filter: blur(22px) saturate(1.55);
+  border: 1px solid color-mix(in srgb, #fff 45%, var(--border)) !important;
+  box-shadow:
+    0 18px 50px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+}
+html[data-layout='glass'] .site-header {
+  border-radius: 0 0 28px 28px;
+  margin: 0 10px;
+  width: calc(100% - 20px);
+  top: 8px;
+}
+html[data-layout='glass'] .hero {
+  min-height: min(86vh, 820px);
+}
+html[data-layout='glass'] .hero-bg {
+  background:
+    radial-gradient(circle at 18% 22%, color-mix(in srgb, var(--primary) 35%, transparent), transparent 42%),
+    radial-gradient(circle at 82% 28%, color-mix(in srgb, var(--accent) 38%, transparent), transparent 40%);
+  filter: blur(2px);
+}
+html[data-layout='glass'] .hero-card {
+  border-radius: 28px !important;
+  transform: rotate(-1.5deg);
+}
+html[data-layout='glass'] .btn-primary {
+  box-shadow: 0 12px 32px color-mix(in srgb, var(--primary) 45%, transparent);
+  border: 1px solid color-mix(in srgb, #fff 30%, transparent);
+}
+html[data-layout='glass'] .home-section-alt,
+html[data-layout='glass'] .newsletter-section {
+  margin: 24px 16px;
+  border-radius: 28px;
+  background: color-mix(in srgb, var(--bg-card) 35%, transparent) !important;
+  backdrop-filter: blur(18px);
+  border: 1px solid color-mix(in srgb, #fff 30%, var(--border));
+}
+html[data-layout='glass'] .input {
+  background: color-mix(in srgb, var(--bg-card) 55%, transparent);
+  backdrop-filter: blur(12px);
+}
+
+/* ========== EDITORIAL (deep) ========== */
+html[data-layout='editorial'] .site-header {
+  background: transparent;
+  border: 0;
+  padding-block: 18px;
+}
+html[data-layout='editorial'] .brand-name {
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+html[data-layout='editorial'] .hero {
+  min-height: min(92vh, 900px);
+  display: flex;
+  align-items: flex-end;
+  border-bottom: 3px solid var(--text);
+}
+html[data-layout='editorial'] .hero-inner {
+  grid-template-columns: 1fr !important;
+  max-width: 980px;
+  padding-bottom: 56px;
+}
+html[data-layout='editorial'] .hero-visual { display: none !important; }
+html[data-layout='editorial'] .hero-title {
+  font-size: clamp(3rem, 9vw, 6rem);
+  line-height: 0.92;
+  letter-spacing: -0.055em;
+  max-width: 11ch;
+  margin-bottom: 20px;
+}
+html[data-layout='editorial'] .hero-badge {
+  border: 1px solid var(--text);
+  border-radius: 0;
+  background: transparent;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+html[data-layout='editorial'] .hero-bg {
+  background: linear-gradient(115deg, var(--bg-muted) 0%, var(--bg) 45%, color-mix(in srgb, var(--accent-light) 80%, var(--bg)) 100%);
+}
+html[data-layout='editorial'] .home-section { padding: 88px 0; }
+html[data-layout='editorial'] .home-section h2 {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  letter-spacing: -0.04em;
+  max-width: 16ch;
+}
+html[data-layout='editorial'] .grid-products {
+  grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
+  gap: 40px 28px;
+}
+html[data-layout='editorial'] .card,
+html[data-layout='editorial'] .product-card,
+html[data-layout='editorial'] .category-card,
+html[data-layout='editorial'] .step-card {
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+html[data-layout='editorial'] .card.home-cta {
+  background: var(--bg-card) !important;
+  border: 2px solid var(--text) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 28px;
+}
+html[data-layout='editorial'] .product-card {
+  border-bottom: 2px solid var(--text) !important;
+  padding-bottom: 18px;
+}
+html[data-layout='editorial'] .site-footer {
+  border-top: 4px solid var(--text);
+  background: var(--bg);
+}
+
+/* ========== ATELIER (deep) ========== */
+html[data-layout='atelier'] .site-header {
+  background: var(--bg-muted);
+  border-bottom: 4px double var(--text);
+}
+html[data-layout='atelier'] .hero-bg {
+  background:
+    repeating-linear-gradient(-14deg, transparent 0 16px, color-mix(in srgb, var(--border) 70%, transparent) 16px 17px),
+    repeating-linear-gradient(76deg, transparent 0 22px, color-mix(in srgb, var(--primary) 10%, transparent) 22px 23px),
+    linear-gradient(180deg, var(--bg-muted), var(--bg));
+}
+html[data-layout='atelier'] .hero-card,
+html[data-layout='atelier'] .card,
+html[data-layout='atelier'] .category-card,
+html[data-layout='atelier'] .step-card,
+html[data-layout='atelier'] .product-card {
+  border: 2.5px solid var(--text) !important;
+  border-radius: 2px !important;
+  box-shadow: 8px 8px 0 color-mix(in srgb, var(--primary) 35%, transparent) !important;
+  background: var(--bg-card);
+}
+html[data-layout='atelier'] .btn {
+  border-radius: 2px;
+  border: 2px solid var(--text);
+}
+html[data-layout='atelier'] .btn-primary {
+  box-shadow: 4px 4px 0 var(--text);
+}
+html[data-layout='atelier'] .home-section-alt {
+  background:
+    radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--text) 18%, transparent) 1.2px, transparent 0) 0 0 / 14px 14px,
+    var(--bg-muted);
+  border-block: 3px double var(--text);
+}
+html[data-layout='atelier'] .site-footer {
+  border-top: 4px double var(--text);
+}
+
+/* ========== BRUTALIST ========== */
+html[data-layout='brutalist'] .site-header {
+  background: var(--text);
+  color: var(--bg);
+  border: 0;
+}
+html[data-layout='brutalist'] .site-header a,
+html[data-layout='brutalist'] .brand-name,
+html[data-layout='brutalist'] .site-header .btn-ghost {
+  color: var(--bg) !important;
+}
+html[data-layout='brutalist'] .hero {
+  border-bottom: 8px solid var(--text);
+}
+html[data-layout='brutalist'] .hero-bg {
+  background: repeating-linear-gradient(90deg, var(--bg) 0 24px, var(--bg-muted) 24px 48px);
+}
+html[data-layout='brutalist'] .hero-title {
+  font-size: clamp(2.8rem, 8vw, 5.5rem);
+  text-transform: uppercase;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+}
+html[data-layout='brutalist'] .hero-card,
+html[data-layout='brutalist'] .card,
+html[data-layout='brutalist'] .product-card,
+html[data-layout='brutalist'] .category-card,
+html[data-layout='brutalist'] .step-card {
+  border: 4px solid var(--text) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: var(--bg-card);
+}
+html[data-layout='brutalist'] .btn {
+  border-radius: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border: 3px solid var(--text);
+}
+html[data-layout='brutalist'] .btn-primary {
+  box-shadow: 6px 6px 0 var(--text);
+}
+html[data-layout='brutalist'] .home-section h2 {
+  text-transform: uppercase;
+  border-left: 10px solid var(--primary);
+  padding-left: 14px;
+}
+html[data-layout='brutalist'] .site-footer {
+  background: var(--text);
+  color: var(--bg);
+  border: 0;
+}
+html[data-layout='brutalist'] .site-footer a { color: var(--bg); }
+
+/* ========== NEON ========== */
+html[data-layout='neon'] body {
+  background:
+    radial-gradient(900px 500px at 10% 0%, color-mix(in srgb, var(--primary) 35%, #000), transparent 55%),
+    radial-gradient(800px 500px at 90% 10%, color-mix(in srgb, var(--accent) 30%, #000), transparent 50%),
+    #07090d;
+}
+html[data-layout='neon'] .site-shell { color: #f4f7fb; }
+html[data-layout='neon'] .site-header,
+html[data-layout='neon'] .site-footer,
+html[data-layout='neon'] .card,
+html[data-layout='neon'] .product-card,
+html[data-layout='neon'] .category-card,
+html[data-layout='neon'] .hero-card,
+html[data-layout='neon'] .step-card {
+  background: rgba(12, 16, 24, 0.78) !important;
+  border: 1px solid color-mix(in srgb, var(--accent) 65%, transparent) !important;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--primary) 35%, transparent),
+    0 0 28px color-mix(in srgb, var(--primary) 28%, transparent),
+    inset 0 0 24px color-mix(in srgb, var(--accent) 8%, transparent) !important;
+  border-radius: 14px;
+}
+html[data-layout='neon'] .site-header {
+  border-radius: 0 0 18px 18px;
+  margin: 0 8px;
+  width: calc(100% - 16px);
+}
+html[data-layout='neon'] .hero-title {
+  text-shadow: 0 0 24px color-mix(in srgb, var(--accent) 55%, transparent);
+}
+html[data-layout='neon'] .btn-primary {
+  box-shadow: 0 0 22px color-mix(in srgb, var(--primary) 55%, transparent);
+}
+html[data-layout='neon'] .home-section-alt {
+  background: rgba(8, 10, 16, 0.55) !important;
+  border-block: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+}
+
+/* ========== SILK ========== */
+html[data-layout='silk'] .site-header {
+  background: color-mix(in srgb, var(--bg-card) 88%, var(--accent-light));
+  border: 0;
+  border-radius: 0 0 40px 40px;
+  box-shadow: var(--shadow-lg);
+}
+html[data-layout='silk'] .hero {
+  min-height: min(88vh, 860px);
+}
+html[data-layout='silk'] .hero-bg {
+  background:
+    radial-gradient(ellipse at 20% 0%, color-mix(in srgb, var(--accent) 35%, transparent), transparent 50%),
+    radial-gradient(ellipse at 80% 20%, color-mix(in srgb, var(--primary) 20%, transparent), transparent 45%),
+    linear-gradient(180deg, var(--accent-light), var(--bg));
+  border-radius: 0 0 80px 80px;
+}
+html[data-layout='silk'] .hero-card,
+html[data-layout='silk'] .card,
+html[data-layout='silk'] .product-card,
+html[data-layout='silk'] .category-card,
+html[data-layout='silk'] .step-card {
+  border-radius: 36px !important;
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border)) !important;
+  box-shadow: 0 24px 60px color-mix(in srgb, var(--primary) 12%, transparent) !important;
+}
+html[data-layout='silk'] .btn { border-radius: 999px; }
+html[data-layout='silk'] .newsletter-section,
+html[data-layout='silk'] .site-footer {
+  border-radius: 48px 48px 0 0;
+}
+
+/* ========== CINEMA ========== */
+html[data-layout='cinema'] .site-header {
+  background: color-mix(in srgb, var(--bg-card) 92%, transparent);
+  backdrop-filter: blur(12px);
+  border: 0;
+  box-shadow: var(--shadow);
+}
+html[data-layout='cinema'] .hero {
+  min-height: min(88vh, 860px);
+}
+html[data-layout='cinema'] .hero-bg {
+  background: var(--bg-muted);
+}
+html[data-layout='cinema'] .hero-visual { display: none !important; }
+html[data-layout='cinema'] .hero-title {
+  font-size: clamp(2.8rem, 7vw, 5rem);
+  text-shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
+  max-width: 14ch;
+}
+html[data-layout='cinema'] .card,
+html[data-layout='cinema'] .product-card,
+html[data-layout='cinema'] .category-card,
+html[data-layout='cinema'] .step-card {
+  border-radius: 6px;
+  box-shadow: var(--shadow-lg);
+}
+html[data-layout='cinema'] .home-section-alt.home-section-media {
+  background: transparent !important;
+  padding: 56px 0;
+}
+html[data-layout='cinema'] .site-footer {
+  background: var(--bg-card);
+}
+
+/* ========== RUNWAY ========== */
+html[data-layout='runway'] .site-header {
+  position: absolute;
+  inset-inline: 0;
+  background: transparent;
+  border: 0;
+  z-index: 30;
+}
+html[data-layout='runway'] .site-main {
+  z-index: 1;
+}
+html[data-layout='runway'] .hero {
+  min-height: 100vh;
+  padding-top: 96px;
+}
+html[data-layout='runway'] .hero-bg {
+  background: var(--bg-muted);
+}
+html[data-layout='runway'] .hero-title {
+  font-size: clamp(3rem, 9vw, 6rem);
+  text-transform: uppercase;
+  letter-spacing: -0.04em;
+  line-height: 0.92;
+}
+html[data-layout='runway'] .hero-card {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: color-mix(in srgb, var(--bg-card) 82%, transparent) !important;
+  backdrop-filter: blur(16px);
+  transform: rotate(-3deg) translateY(12px);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.2) !important;
+}
+html[data-layout='runway'] .product-card {
+  border-radius: 0 !important;
+  overflow: hidden;
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.14) !important;
+}
+html[data-layout='runway'] .product-card:hover { transform: translateY(-8px); }
+html[data-layout='runway'] .home-section { padding: 72px 0; }
+html[data-layout='runway'] .home-section-alt.home-section-media {
+  background: transparent !important;
+  padding: 64px 0;
+}
+html[data-layout='runway'] .site-footer { border: 0; background: var(--bg); }
+
+/* ========== BOUTIQUE ========== */
+html[data-layout='boutique'] .site-header {
+  background: var(--bg-card);
+  border: 0;
+  border-radius: 0 0 28px 28px;
+  box-shadow: var(--shadow);
+}
+html[data-layout='boutique'] .hero-bg {
+  background: var(--accent-light);
+  border-radius: 0 0 48px 48px;
+}
+html[data-layout='boutique'] .hero-card,
+html[data-layout='boutique'] .card,
+html[data-layout='boutique'] .product-card,
+html[data-layout='boutique'] .category-card,
+html[data-layout='boutique'] .step-card {
+  border-radius: 28px !important;
+  background: var(--bg-card) !important;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border)) !important;
+}
+html[data-layout='boutique'] .btn { border-radius: 999px; }
+html[data-layout='boutique'] .home-section-alt.home-section-media {
+  background: transparent !important;
+  border-radius: 32px;
+  margin: 16px;
+  overflow: hidden;
+}
+html[data-layout='boutique'] .site-footer {
+  border-radius: 32px 32px 0 0;
+  background: var(--bg-card);
+}
+
+/* ========== GALLERY WALL ========== */
+html[data-layout='gallery_wall'] .site-header {
+  background: var(--bg-card);
+  border: 0;
+  margin: 12px;
+  width: calc(100% - 24px);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+}
+html[data-layout='gallery_wall'] .hero {
+  margin: 0 12px;
+  border-radius: 24px;
+  overflow: hidden;
+  min-height: min(72vh, 700px);
+}
+html[data-layout='gallery_wall'] .hero-bg {
+  background: var(--bg-muted);
+}
+html[data-layout='gallery_wall'] .card,
+html[data-layout='gallery_wall'] .product-card,
+html[data-layout='gallery_wall'] .category-card,
+html[data-layout='gallery_wall'] .step-card,
+html[data-layout='gallery_wall'] .hero-card {
+  background: var(--bg-card) !important;
+  border-radius: 16px;
+  box-shadow: var(--shadow-lg) !important;
+}
+html[data-layout='gallery_wall'] .home-section {
+  margin-inline: 12px;
+}
+html[data-layout='gallery_wall'] .home-lookbook {
+  margin-inline: 12px;
+  border-radius: 24px;
+}
+html[data-layout='gallery_wall'] .site-footer {
+  margin: 16px 12px 0;
+  border-radius: 24px 24px 0 0;
+  background: var(--bg-card);
+}
+
+/* ========== SPLIT STAGE ========== */
+html[data-layout='split_stage'] .site-header {
+  background: var(--bg-card);
+  border-bottom: 0;
+  box-shadow: var(--shadow);
+}
+html[data-layout='split_stage'] .hero {
+  min-height: min(82vh, 780px);
+}
+html[data-layout='split_stage'] .hero-bg {
+  background: var(--bg-muted);
+}
+html[data-layout='split_stage'] .hero-title {
+  font-size: clamp(2.6rem, 6.5vw, 4.6rem);
+  max-width: 12ch;
+}
+html[data-layout='split_stage'] .hero-visual { display: none !important; }
+html[data-layout='split_stage'] .card,
+html[data-layout='split_stage'] .product-card,
+html[data-layout='split_stage'] .category-card {
+  background: var(--bg-card) !important;
+  border-radius: 8px;
+}
+html[data-layout='split_stage'] .home-section-alt.home-section-media {
+  background: transparent !important;
+}
+
+/* ========== PARALLAX LOOM ========== */
+html[data-layout='parallax_loom'] .site-header {
+  background: var(--bg-card);
+  border: 0;
+  box-shadow: var(--shadow);
+}
+html[data-layout='parallax_loom'] .hero {
+  min-height: min(86vh, 820px);
+}
+html[data-layout='parallax_loom'] .hero-bg {
+  background: var(--bg-muted);
+}
+html[data-layout='parallax_loom'] .hero-card {
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--bg-card) 88%, transparent) !important;
+  backdrop-filter: blur(14px);
+  border: 1px solid color-mix(in srgb, #fff 25%, var(--border)) !important;
+}
+html[data-layout='parallax_loom'] .product-card,
+html[data-layout='parallax_loom'] .category-card,
+html[data-layout='parallax_loom'] .card {
+  background: var(--bg-card) !important;
+  border-radius: 18px;
+  box-shadow: var(--shadow-lg) !important;
+}
+html[data-layout='parallax_loom'] .home-section-alt.home-section-media {
+  background: transparent !important;
+}
+
+/* ========== SEASONS (deep) ========== */
+html[data-layout='spring'] .hero-bg {
+  background:
+    radial-gradient(circle at 12% 18%, color-mix(in srgb, var(--accent) 45%, transparent), transparent 32%),
+    radial-gradient(circle at 88% 12%, color-mix(in srgb, var(--primary) 28%, transparent), transparent 34%),
+    radial-gradient(circle at 50% 90%, color-mix(in srgb, var(--accent-light) 80%, transparent), transparent 40%),
+    linear-gradient(180deg, color-mix(in srgb, var(--accent-light) 75%, var(--bg)), var(--bg));
+}
+html[data-layout='spring'] .card,
+html[data-layout='spring'] .product-card,
+html[data-layout='spring'] .category-card,
+html[data-layout='spring'] .hero-card,
+html[data-layout='spring'] .step-card {
+  border-radius: 28px 28px 28px 8px !important;
+  border: 2px solid color-mix(in srgb, var(--primary) 25%, var(--border)) !important;
+  box-shadow: 0 16px 0 color-mix(in srgb, var(--accent) 20%, transparent) !important;
+}
+html[data-layout='spring'] .site-header {
+  border-bottom: 0;
+  box-shadow: 0 12px 0 color-mix(in srgb, var(--accent) 18%, transparent);
+}
+html[data-layout='spring'] .home-section-alt {
+  background:
+    radial-gradient(circle at 10% 40%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 35%),
+    var(--bg-card);
+}
+
+html[data-layout='summer'] .hero-bg {
+  clip-path: ellipse(130% 100% at 50% -5%);
+  background: linear-gradient(155deg, color-mix(in srgb, var(--accent) 35%, var(--bg)), var(--bg) 48%, color-mix(in srgb, var(--primary) 18%, var(--bg)));
+}
+html[data-layout='summer'] .hero-card,
+html[data-layout='summer'] .card,
+html[data-layout='summer'] .product-card,
+html[data-layout='summer'] .category-card {
+  border-radius: 32px !important;
+  box-shadow: 0 22px 50px color-mix(in srgb, var(--primary) 16%, transparent) !important;
+  border: 0 !important;
+}
+html[data-layout='summer'] .btn-primary { border-radius: 999px; padding-inline: 28px; }
+html[data-layout='summer'] .newsletter-section {
+  margin: 0 18px 28px;
+  border-radius: 40px;
+  box-shadow: 0 20px 50px color-mix(in srgb, var(--primary) 25%, transparent);
+}
+
+html[data-layout='autumn'] .site-header {
+  border-bottom: 6px solid color-mix(in srgb, var(--accent) 65%, var(--border));
+  background: linear-gradient(180deg, var(--bg-muted), var(--header-bg));
+}
+html[data-layout='autumn'] .hero-bg {
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent) 40%, var(--bg-muted)), var(--bg) 50%, color-mix(in srgb, var(--primary) 20%, var(--bg)));
+}
+html[data-layout='autumn'] .card,
+html[data-layout='autumn'] .product-card,
+html[data-layout='autumn'] .category-card,
+html[data-layout='autumn'] .step-card {
+  border-radius: 14px 34px 14px 34px !important;
+  border: 2px solid color-mix(in srgb, var(--accent) 45%, var(--border)) !important;
+  box-shadow: 10px 10px 0 color-mix(in srgb, var(--accent) 22%, transparent) !important;
+}
+html[data-layout='autumn'] .home-section h2::after {
+  content: '';
+  display: block;
+  width: 90px;
+  height: 5px;
+  margin-top: 12px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+}
+
+html[data-layout='winter'] .site-header,
+html[data-layout='winter'] .site-footer {
+  background: color-mix(in srgb, var(--bg-card) 80%, #fff);
+  border-color: color-mix(in srgb, #fff 70%, var(--border));
+  box-shadow: 0 10px 40px rgba(40, 70, 110, 0.08);
+}
+html[data-layout='winter'] .hero-bg {
+  background:
+    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.75), transparent 30%),
+    radial-gradient(circle at 82% 18%, rgba(255, 255, 255, 0.45), transparent 35%),
+    radial-gradient(circle at 50% 80%, color-mix(in srgb, var(--primary) 12%, transparent), transparent 40%),
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-muted) 70%, #fff), var(--bg));
+}
+html[data-layout='winter'] .card,
+html[data-layout='winter'] .product-card,
+html[data-layout='winter'] .hero-card,
+html[data-layout='winter'] .category-card {
+  border: 1px solid color-mix(in srgb, #fff 70%, var(--border)) !important;
+  box-shadow: 0 16px 40px rgba(20, 50, 90, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(8px);
+  border-radius: 18px;
+}
+html[data-layout='winter'] .btn-outline { border-width: 2px; }
+
+html[data-layout='monsoon'] .site-header {
+  background: color-mix(in srgb, var(--bg-card) 70%, transparent);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid color-mix(in srgb, var(--primary) 25%, var(--border));
+}
+html[data-layout='monsoon'] .hero-bg {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--primary) 18%, transparent), transparent 40%),
+    repeating-linear-gradient(100deg, transparent 0 10px, color-mix(in srgb, var(--primary) 8%, transparent) 10px 11px),
+    linear-gradient(160deg, var(--bg-muted), var(--bg));
+}
+html[data-layout='monsoon'] .card,
+html[data-layout='monsoon'] .product-card,
+html[data-layout='monsoon'] .category-card,
+html[data-layout='monsoon'] .hero-card {
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--bg-card) 82%, transparent) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid color-mix(in srgb, var(--primary) 20%, var(--border)) !important;
+  box-shadow: 0 18px 40px color-mix(in srgb, var(--primary) 14%, transparent) !important;
+}
+
+/* ========== HOLIDAYS (deep) ========== */
+html[data-layout='christmas'] .site-header {
+  border-bottom: 0;
+  box-shadow: 0 10px 0 color-mix(in srgb, var(--accent) 55%, transparent), 0 18px 0 color-mix(in srgb, var(--primary) 35%, transparent);
+}
+html[data-layout='christmas'] .hero-bg {
+  background:
+    radial-gradient(circle at 10% 15%, color-mix(in srgb, var(--accent) 50%, transparent), transparent 26%),
+    radial-gradient(circle at 90% 18%, color-mix(in srgb, var(--primary) 35%, transparent), transparent 28%),
+    radial-gradient(circle at 50% 100%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 40%),
+    linear-gradient(180deg, var(--bg-muted), var(--bg));
+}
+html[data-layout='christmas'] .hero-card,
+html[data-layout='christmas'] .card,
+html[data-layout='christmas'] .product-card {
+  border: 3px solid color-mix(in srgb, var(--accent) 60%, var(--border)) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--primary) 16%, transparent), 0 16px 0 color-mix(in srgb, var(--primary) 12%, transparent) !important;
+}
+html[data-layout='christmas'] .newsletter-section {
+  box-shadow: inset 0 0 0 6px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+html[data-layout='valentine'] .hero-bg {
+  background:
+    radial-gradient(circle at 28% 35%, color-mix(in srgb, var(--accent) 42%, transparent), transparent 38%),
+    radial-gradient(circle at 72% 25%, color-mix(in srgb, var(--primary) 22%, transparent), transparent 34%),
+    linear-gradient(180deg, color-mix(in srgb, var(--accent-light) 80%, var(--bg)), var(--bg));
+}
+html[data-layout='valentine'] .card,
+html[data-layout='valentine'] .product-card,
+html[data-layout='valentine'] .category-card,
+html[data-layout='valentine'] .hero-card {
+  border-radius: 36px 36px 36px 10px !important;
+  border: 2px solid color-mix(in srgb, var(--accent) 50%, var(--border)) !important;
+  box-shadow: 0 20px 0 color-mix(in srgb, var(--accent) 18%, transparent) !important;
+}
+html[data-layout='valentine'] .btn-primary { border-radius: 999px; }
+html[data-layout='valentine'] .home-section-alt {
+  background: color-mix(in srgb, var(--accent-light) 75%, var(--bg-card)) !important;
+}
+
+html[data-layout='halloween'] .site-header {
+  background: color-mix(in srgb, var(--bg) 85%, #000);
+  border: 0;
+  clip-path: polygon(0 0, 100% 0, 100% 78%, 97% 100%, 90% 82%, 80% 100%, 70% 82%, 60% 100%, 50% 82%, 40% 100%, 30% 82%, 20% 100%, 10% 82%, 0 100%);
+  padding-bottom: 26px;
+}
+html[data-layout='halloween'] .hero-bg {
+  background:
+    radial-gradient(circle at 75% 15%, color-mix(in srgb, var(--accent) 45%, transparent), transparent 32%),
+    linear-gradient(180deg, color-mix(in srgb, var(--bg) 55%, #000), var(--bg));
+}
+html[data-layout='halloween'] .card,
+html[data-layout='halloween'] .product-card,
+html[data-layout='halloween'] .category-card,
+html[data-layout='halloween'] .hero-card {
+  border-radius: 2px 28px 2px 28px !important;
+  border: 2px solid color-mix(in srgb, var(--accent) 55%, var(--border)) !important;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.35) !important;
+  transform: rotate(-0.4deg);
+}
+html[data-layout='halloween'] .btn-primary {
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+html[data-layout='easter'] .hero-bg {
+  background:
+    radial-gradient(ellipse at 18% 78%, color-mix(in srgb, var(--accent-light) 90%, transparent), transparent 38%),
+    radial-gradient(ellipse at 82% 70%, color-mix(in srgb, var(--primary) 22%, transparent), transparent 36%),
+    linear-gradient(180deg, var(--bg-muted), var(--bg));
+}
+html[data-layout='easter'] .hero-card,
+html[data-layout='easter'] .product-card,
+html[data-layout='easter'] .category-card {
+  border-radius: 28px !important;
+  border: 2px solid color-mix(in srgb, var(--accent) 40%, var(--border)) !important;
+}
+html[data-layout='easter'] .category-card {
+  border-radius: 40% / 18% !important;
+}
+html[data-layout='easter'] .btn { border-radius: 999px; }
+html[data-layout='easter'] .card.home-cta {
+  border-radius: 28px !important;
+  overflow: visible;
+}
+
+html[data-layout='new_year'] .site-header {
+  background: color-mix(in srgb, var(--bg-card) 75%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 60%, var(--border));
+  box-shadow: 0 0 50px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+html[data-layout='new_year'] .hero-bg {
+  background:
+    radial-gradient(circle at 50% -5%, color-mix(in srgb, var(--accent) 48%, transparent), transparent 42%),
+    radial-gradient(circle at 20% 40%, color-mix(in srgb, var(--primary) 20%, transparent), transparent 30%),
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-muted) 60%, var(--primary)), var(--bg));
+}
+html[data-layout='new_year'] .hero-title {
+  text-shadow: 0 0 36px color-mix(in srgb, var(--accent) 55%, transparent);
+}
+html[data-layout='new_year'] .card,
+html[data-layout='new_year'] .product-card,
+html[data-layout='new_year'] .hero-card {
+  border: 1px solid color-mix(in srgb, var(--accent) 65%, var(--border)) !important;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 22%, transparent), 0 18px 40px rgba(0, 0, 0, 0.12) !important;
+}
+html[data-layout='new_year'] .btn-primary {
+  box-shadow: 0 0 30px color-mix(in srgb, var(--primary) 50%, transparent);
+}
+
+html[data-layout='thanksgiving'] .site-header {
+  border-bottom: 8px double color-mix(in srgb, var(--accent) 65%, var(--border));
+}
+html[data-layout='thanksgiving'] .hero-bg {
+  background: linear-gradient(155deg, color-mix(in srgb, var(--accent) 38%, var(--bg-muted)), var(--bg) 55%, color-mix(in srgb, var(--primary) 16%, var(--bg)));
+}
+html[data-layout='thanksgiving'] .hero-card,
+html[data-layout='thanksgiving'] .card,
+html[data-layout='thanksgiving'] .product-card {
+  border-radius: 8px !important;
+  border: 3px solid color-mix(in srgb, var(--accent) 50%, var(--border)) !important;
+  box-shadow: 0 14px 0 color-mix(in srgb, var(--accent) 25%, transparent) !important;
+}
+html[data-layout='thanksgiving'] .home-section h2 {
+  display: inline-block;
+  padding-bottom: 8px;
+  border-bottom: 4px solid color-mix(in srgb, var(--accent) 60%, transparent);
+}
+
+html[data-layout='diwali'] .site-header {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 45%, transparent), 0 12px 40px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+html[data-layout='diwali'] .hero-bg {
+  background:
+    radial-gradient(circle at 50% 20%, color-mix(in srgb, var(--accent) 40%, transparent), transparent 35%),
+    radial-gradient(circle at 15% 70%, color-mix(in srgb, var(--primary) 20%, transparent), transparent 30%),
+    radial-gradient(circle at 85% 65%, color-mix(in srgb, var(--accent) 25%, transparent), transparent 30%),
+    linear-gradient(180deg, var(--bg-muted), var(--bg));
+}
+html[data-layout='diwali'] .card,
+html[data-layout='diwali'] .product-card,
+html[data-layout='diwali'] .hero-card {
+  border: 2px solid color-mix(in srgb, var(--accent) 55%, var(--border)) !important;
+  box-shadow: 0 0 24px color-mix(in srgb, var(--accent) 28%, transparent), inset 0 0 20px color-mix(in srgb, var(--accent) 8%, transparent) !important;
+  border-radius: 16px;
+}
+html[data-layout='diwali'] .btn-primary {
+  box-shadow: 0 0 28px color-mix(in srgb, var(--primary) 45%, transparent);
+}
+
+html[data-layout='ramadan'] .site-header {
+  border-bottom: 0;
+  background: linear-gradient(180deg, var(--bg-muted), var(--header-bg));
+}
+html[data-layout='ramadan'] .hero-bg {
+  background:
+    radial-gradient(circle at 80% 18%, color-mix(in srgb, var(--accent) 30%, transparent), transparent 28%),
+    linear-gradient(180deg, var(--bg-muted), var(--bg));
+}
+html[data-layout='ramadan'] .hero-card,
+html[data-layout='ramadan'] .card,
+html[data-layout='ramadan'] .product-card,
+html[data-layout='ramadan'] .category-card {
+  border-radius: 18px 18px 48px 48px / 18px 18px 28px 28px !important;
+  border: 2px solid color-mix(in srgb, var(--primary) 30%, var(--border)) !important;
+  box-shadow: 0 18px 40px color-mix(in srgb, var(--primary) 12%, transparent) !important;
+}
+html[data-layout='ramadan'] .home-section h2 {
+  border-bottom: 3px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  display: inline-block;
+  padding-bottom: 6px;
+}
+
+html[data-layout='mothers_day'] .hero-bg {
+  background:
+    radial-gradient(circle at 25% 30%, color-mix(in srgb, var(--accent) 35%, transparent), transparent 35%),
+    radial-gradient(circle at 75% 20%, color-mix(in srgb, var(--primary) 18%, transparent), transparent 32%),
+    linear-gradient(180deg, color-mix(in srgb, var(--accent-light) 85%, var(--bg)), var(--bg));
+}
+html[data-layout='mothers_day'] .card,
+html[data-layout='mothers_day'] .product-card,
+html[data-layout='mothers_day'] .hero-card,
+html[data-layout='mothers_day'] .category-card {
+  border-radius: 30px 30px 12px 30px !important;
+  border: 2px dashed color-mix(in srgb, var(--accent) 45%, var(--border)) !important;
+  box-shadow: 0 18px 0 color-mix(in srgb, var(--accent) 16%, transparent) !important;
+}
+html[data-layout='mothers_day'] .btn { border-radius: 999px; }
+
+html[data-layout='black_friday'] .site-header {
+  background: var(--text);
+  color: var(--bg);
+  border: 0;
+}
+html[data-layout='black_friday'] .site-header a,
+html[data-layout='black_friday'] .brand-name {
+  color: var(--bg) !important;
+}
+html[data-layout='black_friday'] .hero-bg {
+  background:
+    repeating-linear-gradient(-18deg, transparent 0 18px, color-mix(in srgb, var(--accent) 18%, transparent) 18px 36px),
+    linear-gradient(180deg, color-mix(in srgb, var(--text) 85%, var(--bg)), var(--bg));
+}
+html[data-layout='black_friday'] .hero-badge {
+  background: var(--accent);
+  color: var(--text);
+  border-radius: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+html[data-layout='black_friday'] .hero-title {
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+}
+html[data-layout='black_friday'] .card,
+html[data-layout='black_friday'] .product-card,
+html[data-layout='black_friday'] .category-card,
+html[data-layout='black_friday'] .hero-card {
+  border: 4px solid var(--text) !important;
+  border-radius: 0 !important;
+  box-shadow: 10px 10px 0 var(--accent) !important;
+}
+html[data-layout='black_friday'] .btn {
+  border-radius: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+html[data-layout='black_friday'] .btn-primary {
+  box-shadow: 5px 5px 0 var(--text);
+}
+
+/* Always keep CTA / newsletter readable regardless of template */
+html[data-layout] .card.home-cta {
+  position: relative;
+  z-index: 1;
+  overflow: visible;
+}
+html[data-layout] .newsletter-section {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 900px) {
+  html[data-layout='runway'] .site-header {
+    position: sticky;
+    background: color-mix(in srgb, var(--bg-card) 92%, transparent);
+  }
+  html[data-layout='glass'] .site-header,
+  html[data-layout='neon'] .site-header,
+  html[data-layout='gallery_wall'] .site-header {
+    margin: 0;
+    width: 100%;
+    border-radius: 0;
+  }
+  html[data-layout='halloween'] .site-header {
+    clip-path: none;
+    padding-bottom: 8px;
+  }
+  html[data-layout='easter'] .hero-card,
+  html[data-layout='easter'] .product-card,
+  html[data-layout='easter'] .category-card {
+    border-radius: 24px !important;
+  }
+  .surface-strips { grid-template-columns: repeat(2, 1fr); }
+  .surface-split.split-3,
+  .surface-split.split-4 {
+    grid-template-columns: 1fr 1fr;
+  }
+  .surface-mosaic {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

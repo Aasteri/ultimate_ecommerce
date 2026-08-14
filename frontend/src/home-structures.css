@@ -1,0 +1,380 @@
+/* Structural homepage compositions — different DOM arrangements & card types */
+
+.hero--center .hero-inner--center {
+  grid-template-columns: 1fr;
+  max-width: 820px;
+  margin: 0 auto;
+  text-align: center;
+}
+.hero--center .hero-actions,
+.hero--center .hero-features {
+  justify-content: center;
+}
+
+/* Product card variants */
+.product-card--horizontal {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 0;
+  overflow: hidden;
+}
+.product-card--horizontal .product-card-media {
+  aspect-ratio: 1;
+  margin: 0;
+  border-radius: 0;
+  height: 100%;
+  min-height: 140px;
+}
+.product-card--horizontal .product-card-media img {
+  height: 100%;
+  object-fit: cover;
+}
+.product-card--horizontal .product-card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px 18px;
+}
+.product-list-editorial {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.product-card--compact .product-card-media {
+  aspect-ratio: 1;
+}
+.product-card--compact .product-card-title {
+  font-size: 14px;
+}
+.product-card--compact .product-card-price {
+  font-size: 14px;
+}
+.grid-products--dense {
+  grid-template-columns: repeat(auto-fill, minmax(min(150px, 100%), 1fr));
+  gap: 12px;
+}
+
+.product-card--poster .product-card-media {
+  aspect-ratio: 3 / 4;
+}
+.product-card--poster .product-card-body {
+  padding-top: 12px;
+}
+.grid-products--poster {
+  grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
+  gap: 20px;
+}
+
+.product-card--feature {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  min-height: 280px;
+  overflow: hidden;
+}
+.product-card--feature .product-card-media {
+  margin: 0;
+  border-radius: 0;
+  min-height: 280px;
+  aspect-ratio: auto;
+}
+.product-card--feature .product-card-media img {
+  height: 100%;
+  object-fit: cover;
+}
+.product-card--feature .product-card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 28px;
+}
+.product-card-kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.product-card--slab {
+  border-radius: 0;
+  border-width: 3px;
+}
+.product-card--slab .product-card-media {
+  aspect-ratio: 4 / 3;
+  border-radius: 0;
+}
+.grid-products--rush {
+  grid-template-columns: repeat(auto-fill, minmax(min(180px, 100%), 1fr));
+  gap: 12px;
+}
+
+.product-card--framed {
+  border-width: 2px;
+  box-shadow: 8px 8px 0 color-mix(in srgb, var(--accent) 25%, transparent);
+}
+.product-card--soft {
+  border-radius: 24px;
+  overflow: hidden;
+}
+.product-card--soft .product-card-media {
+  border-radius: 20px;
+  margin: 10px;
+}
+
+/* Category showcases */
+.category-showcase--chips,
+.category-showcase--pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.category-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-card);
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+}
+.category-chip em {
+  font-style: normal;
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 12px;
+}
+.category-chip:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.category-showcase--list {
+  display: flex;
+  flex-direction: column;
+  border-top: 2px solid var(--text);
+}
+.category-list-item {
+  display: grid;
+  grid-template-columns: 48px 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 16px 4px;
+  border-bottom: 2px solid var(--text);
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.category-list-item:hover {
+  background: var(--accent-light);
+  text-decoration: none;
+}
+.category-list-index {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+.category-list-count {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.category-showcase--rail,
+.category-showcase--ribbon {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+.category-rail-item {
+  flex: 0 0 auto;
+  min-width: 160px;
+  padding: 16px;
+  border: 2px solid var(--text);
+  background: var(--bg-card);
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.category-showcase--ribbon .category-rail-item {
+  border-radius: 10px 22px;
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+  box-shadow: 5px 5px 0 color-mix(in srgb, var(--accent) 20%, transparent);
+}
+.category-rail-item span {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.category-showcase--bento,
+.category-showcase--mosaic {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.category-bento-item {
+  position: relative;
+  padding: 24px 18px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--bg-card);
+  color: var(--text);
+  text-decoration: none;
+  overflow: hidden;
+  min-height: 120px;
+}
+.category-bento-item.is-feature {
+  grid-column: span 2;
+  grid-row: span 2;
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.category-bento-accent {
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 100%;
+  height: 5px;
+  background: var(--cat-accent, var(--primary));
+}
+.category-bento-item h3 {
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+.category-bento-item p {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+.category-showcase--mosaic .category-bento-item {
+  border-radius: 12px;
+  aspect-ratio: 1;
+}
+
+/* Structure shells */
+.home-atelier-board {
+  padding: 32px 0 48px;
+  background: var(--bg-muted);
+  border-block: 3px double var(--border);
+}
+.home-atelier-board-inner {
+  display: grid;
+  grid-template-columns: minmax(200px, 280px) 1fr;
+  gap: 28px;
+  align-items: start;
+}
+.home-atelier-side .home-section {
+  padding: 0;
+}
+.home-atelier-side .section-title {
+  font-size: 20px;
+}
+
+.hero-bento {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr;
+  grid-template-areas:
+    'copy stat'
+    'copy feature';
+  gap: 16px;
+  padding: 48px 0;
+}
+.hero-bento-copy { grid-area: copy; }
+.hero-bento-stat {
+  grid-area: stat;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 24px;
+  text-align: center;
+}
+.hero-bento-feature { grid-area: feature; }
+
+.home-runway-stage {
+  display: grid;
+  grid-template-columns: 1.4fr 0.8fr;
+  gap: 16px;
+  align-items: stretch;
+}
+.home-runway-rail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.hero--rush .hero-rush {
+  position: relative;
+  padding: 72px 0 64px;
+  max-width: 720px;
+}
+.hero-rush-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+.home-rush-split {
+  display: grid;
+  grid-template-columns: minmax(220px, 320px) 1fr;
+  gap: 28px;
+  padding-top: 32px;
+  padding-bottom: 16px;
+}
+.home-rush-split .home-section {
+  padding-top: 0;
+}
+
+.steps-grid--stack {
+  grid-template-columns: 1fr;
+  max-width: 720px;
+}
+.home-section--stacked-steps .section-title {
+  text-align: left;
+}
+
+@media (max-width: 900px) {
+  .product-card--horizontal {
+    grid-template-columns: 110px 1fr;
+  }
+  .product-card--feature {
+    grid-template-columns: 1fr;
+  }
+  .product-card--feature .product-card-media {
+    min-height: 200px;
+  }
+  .category-showcase--bento,
+  .category-showcase--mosaic {
+    grid-template-columns: 1fr 1fr;
+  }
+  .category-bento-item.is-feature {
+    grid-column: span 2;
+    grid-row: span 1;
+    min-height: 160px;
+  }
+  .home-atelier-board-inner,
+  .home-rush-split,
+  .home-runway-stage,
+  .hero-bento {
+    grid-template-columns: 1fr;
+  }
+  .hero-bento {
+    grid-template-areas:
+      'copy'
+      'stat'
+      'feature';
+  }
+  .home-runway-rail {
+    grid-template-columns: 1fr 1fr;
+  }
+}

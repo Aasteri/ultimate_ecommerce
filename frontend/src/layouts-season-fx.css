@@ -1,0 +1,441 @@
+/* Seasonal / holiday atmosphere — particles + ambient motion.
+   Driven by .season-fx and html[data-layout]. Honors reduced motion. */
+
+.season-fx {
+  position: fixed;
+  inset: 0;
+  z-index: 35;
+  pointer-events: none;
+  overflow: hidden;
+  contain: layout paint;
+}
+
+.season-fx__particle {
+  position: absolute;
+  top: -12%;
+  left: var(--x, 50%);
+  width: 10px;
+  height: 10px;
+  opacity: 0.55;
+  transform: translate3d(0, 0, 0) scale(var(--scale, 1));
+  animation-name: season-fall;
+  animation-duration: var(--dur, 12s);
+  animation-delay: var(--delay, 0s);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform, opacity;
+}
+
+/* ----- particle shapes ----- */
+.season-fx--petal .season-fx__particle {
+  width: 14px;
+  height: 10px;
+  border-radius: 60% 40% 60% 40%;
+  background: linear-gradient(135deg, #f7b6c8, #e8f4e8 55%, #c45d7a);
+  opacity: 0.5;
+  animation-name: season-fall-spin;
+}
+
+.season-fx--leaf .season-fx__particle {
+  width: 12px;
+  height: 16px;
+  border-radius: 2px 70% 2px 70%;
+  background: linear-gradient(160deg, #c46a2d, #8a5a32 45%, #a3442f);
+  opacity: 0.48;
+  animation-name: season-fall-spin;
+}
+
+.season-fx--snow .season-fx__particle {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.85);
+  opacity: 0.7;
+  animation-name: season-fall-drift;
+}
+
+.season-fx--layout-christmas .season-fx__particle:nth-child(3n) {
+  width: 4px;
+  height: 4px;
+  background: #d4a017;
+  box-shadow: 0 0 8px rgba(212, 160, 23, 0.9);
+  animation-name: season-twinkle-fall;
+}
+
+.season-fx--sun .season-fx__particle {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff7d6 0%, #d4a017 45%, transparent 70%);
+  opacity: 0.45;
+  top: auto;
+  bottom: -8%;
+  animation-name: season-rise-glow;
+}
+
+.season-fx--rain .season-fx__particle {
+  width: 1.5px;
+  height: 18px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, transparent, rgba(180, 210, 230, 0.85));
+  opacity: 0.4;
+  animation-name: season-rain;
+  animation-duration: calc(var(--dur, 12s) * 0.28);
+}
+
+.season-fx--heart .season-fx__particle {
+  width: 12px;
+  height: 12px;
+  background: #c45d7a;
+  opacity: 0.42;
+  transform: rotate(-45deg) scale(var(--scale, 1));
+  animation-name: season-fall-heart;
+}
+.season-fx--heart .season-fx__particle::before,
+.season-fx--heart .season-fx__particle::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: inherit;
+}
+.season-fx--heart .season-fx__particle::before { top: -6px; left: 0; }
+.season-fx--heart .season-fx__particle::after { top: 0; left: 6px; }
+
+.season-fx--sparkle .season-fx__particle {
+  width: 5px;
+  height: 5px;
+  background: #d4a017;
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  opacity: 0.65;
+  top: auto;
+  animation-name: season-sparkle;
+}
+
+.season-fx--orb .season-fx__particle {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffb347, #c45c26 45%, transparent 70%);
+  opacity: 0.35;
+  filter: blur(0.4px);
+  animation-name: season-orb-float;
+}
+
+.season-fx--confetti .season-fx__particle {
+  width: 8px;
+  height: 8px;
+  border-radius: 3px;
+  opacity: 0.5;
+  animation-name: season-fall-spin;
+}
+.season-fx--confetti .season-fx__particle:nth-child(3n) { background: #a78bfa; border-radius: 50%; }
+.season-fx--confetti .season-fx__particle:nth-child(3n+1) { background: #86efac; }
+.season-fx--confetti .season-fx__particle:nth-child(3n+2) { background: #f9a8d4; }
+
+/* ----- keyframes ----- */
+@keyframes season-fall {
+  0% { transform: translate3d(0, -10vh, 0) scale(var(--scale, 1)); opacity: 0; }
+  12% { opacity: 0.55; }
+  100% { transform: translate3d(var(--drift, 20px), 110vh, 0) scale(var(--scale, 1)); opacity: 0; }
+}
+
+@keyframes season-fall-drift {
+  0% { transform: translate3d(0, -10vh, 0); opacity: 0; }
+  10% { opacity: 0.75; }
+  100% { transform: translate3d(var(--drift, 24px), 110vh, 0); opacity: 0.15; }
+}
+
+@keyframes season-fall-spin {
+  0% { transform: translate3d(0, -10vh, 0) rotate(0deg) scale(var(--scale, 1)); opacity: 0; }
+  10% { opacity: 0.55; }
+  100% { transform: translate3d(var(--drift, 30px), 110vh, 0) rotate(420deg) scale(var(--scale, 1)); opacity: 0; }
+}
+
+@keyframes season-fall-heart {
+  0% { transform: translate3d(0, -8vh, 0) rotate(-45deg) scale(var(--scale, 1)); opacity: 0; }
+  15% { opacity: 0.45; }
+  100% { transform: translate3d(var(--drift, 18px), 110vh, 0) rotate(-45deg) scale(var(--scale, 1)); opacity: 0; }
+}
+
+@keyframes season-rain {
+  0% { transform: translate3d(0, -10vh, 0); opacity: 0; }
+  10% { opacity: 0.45; }
+  100% { transform: translate3d(8px, 110vh, 0); opacity: 0; }
+}
+
+@keyframes season-rise-glow {
+  0% { transform: translate3d(0, 10vh, 0) scale(0.4); opacity: 0; }
+  30% { opacity: 0.55; }
+  100% { transform: translate3d(var(--drift, 16px), -90vh, 0) scale(var(--scale, 1)); opacity: 0; }
+}
+
+@keyframes season-sparkle {
+  0%, 100% { transform: scale(0.3) rotate(0deg); opacity: 0; }
+  40% { transform: scale(var(--scale, 1)) rotate(20deg); opacity: 0.85; }
+  70% { transform: scale(0.6) rotate(-10deg); opacity: 0.3; }
+}
+
+@keyframes season-twinkle-fall {
+  0% { transform: translate3d(0, -10vh, 0) scale(0.4); opacity: 0; }
+  20% { opacity: 1; }
+  50% { opacity: 0.35; }
+  100% { transform: translate3d(var(--drift, 20px), 110vh, 0) scale(1.1); opacity: 0; }
+}
+
+@keyframes season-orb-float {
+  0% { transform: translate3d(0, 20vh, 0) scale(0.6); opacity: 0; }
+  25% { opacity: 0.4; }
+  50% { transform: translate3d(var(--drift, 40px), -10vh, 0) scale(var(--scale, 1)); opacity: 0.25; }
+  100% { transform: translate3d(calc(var(--drift, 40px) * -0.5), -70vh, 0) scale(0.5); opacity: 0; }
+}
+
+@keyframes season-bloom-pulse {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(1.06); }
+}
+
+@keyframes season-shimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+@keyframes season-frost-glow {
+  0%, 100% { box-shadow: 0 0 0 1px color-mix(in srgb, #fff 35%, transparent), 0 12px 40px rgba(120, 160, 190, 0.08); }
+  50% { box-shadow: 0 0 0 1px color-mix(in srgb, #fff 70%, transparent), 0 16px 48px rgba(120, 160, 190, 0.16); }
+}
+
+@keyframes season-garland {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.15); }
+}
+
+@keyframes season-fog {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.65; }
+}
+
+@keyframes season-card-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* ----- ambient layout skins ----- */
+html[data-layout='spring'] .hero-bg::after {
+  content: '';
+  position: absolute;
+  inset: 8% 12%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 40%, color-mix(in srgb, var(--accent) 35%, transparent), transparent 42%),
+    radial-gradient(circle at 70% 35%, color-mix(in srgb, var(--primary) 22%, transparent), transparent 40%);
+  animation: season-bloom-pulse 7s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+html[data-layout='spring'] .hero { position: relative; }
+html[data-layout='spring'] .product-card:nth-child(odd) {
+  animation: season-card-bob 5.5s ease-in-out infinite;
+}
+html[data-layout='spring'] .product-card:nth-child(even) {
+  animation: season-card-bob 6.2s ease-in-out infinite 0.8s;
+}
+
+html[data-layout='summer'] .hero-bg {
+  background-size: 200% 200%;
+  animation: season-shimmer 14s ease-in-out infinite alternate;
+}
+html[data-layout='summer'] .btn-primary {
+  box-shadow: 0 8px 28px color-mix(in srgb, var(--accent) 35%, transparent);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+html[data-layout='summer'] .btn-primary:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 14px 36px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+html[data-layout='summer'] .product-card:hover {
+  transform: translateY(-6px) rotate(-0.4deg);
+}
+
+html[data-layout='autumn'] .home-section h2::after {
+  animation: season-garland 4.5s ease-in-out infinite;
+}
+html[data-layout='autumn'] .hero-bg {
+  background-size: 140% 140%;
+  animation: season-shimmer 18s ease-in-out infinite alternate;
+}
+html[data-layout='autumn'] .product-card:hover {
+  transform: translateY(-5px) rotate(0.6deg);
+}
+
+html[data-layout='winter'] .card,
+html[data-layout='winter'] .product-card,
+html[data-layout='winter'] .hero-card,
+html[data-layout='winter'] .category-card {
+  animation: season-frost-glow 5s ease-in-out infinite;
+}
+html[data-layout='winter'] .hero-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.35), transparent 28%),
+    radial-gradient(circle at 80% 15%, rgba(255, 255, 255, 0.25), transparent 30%);
+  animation: season-bloom-pulse 8s ease-in-out infinite;
+  pointer-events: none;
+}
+html[data-layout='winter'] .hero { position: relative; }
+
+html[data-layout='monsoon'] .hero-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -18deg,
+    transparent 0 14px,
+    rgba(180, 210, 230, 0.08) 14px 15px
+  );
+  animation: season-rain-sheet 1.1s linear infinite;
+  pointer-events: none;
+  opacity: 0.7;
+}
+html[data-layout='monsoon'] .hero { position: relative; }
+html[data-layout='monsoon'] .card,
+html[data-layout='monsoon'] .product-card {
+  backdrop-filter: blur(2px);
+}
+
+@keyframes season-rain-sheet {
+  0% { transform: translateY(-12px); }
+  100% { transform: translateY(12px); }
+}
+
+html[data-layout='christmas'] .site-header {
+  animation: season-garland 3.2s ease-in-out infinite;
+}
+html[data-layout='christmas'] .btn-primary {
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 40%, transparent);
+  animation: season-cta-pulse 2.8s ease-in-out infinite;
+}
+
+@keyframes season-cta-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 35%, transparent); }
+  50% { box-shadow: 0 0 0 8px transparent; }
+}
+
+html[data-layout='valentine'] .product-card:nth-child(3n) {
+  animation: season-card-bob 4.8s ease-in-out infinite;
+}
+html[data-layout='valentine'] .hero-bg {
+  background-size: 160% 160%;
+  animation: season-shimmer 12s ease-in-out infinite alternate;
+}
+html[data-layout='valentine'] .btn-primary:hover {
+  transform: scale(1.04);
+}
+
+html[data-layout='halloween'] .hero-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 100%, rgba(0, 0, 0, 0.35), transparent 55%);
+  animation: season-fog 5s ease-in-out infinite;
+  pointer-events: none;
+}
+html[data-layout='halloween'] .hero { position: relative; }
+html[data-layout='halloween'] .product-card:hover {
+  transform: translateY(-4px) rotate(-1deg);
+  filter: saturate(1.1);
+}
+
+html[data-layout='easter'] .product-card:nth-child(odd) {
+  animation: season-card-bob 5s ease-in-out infinite;
+}
+html[data-layout='easter'] .hero-bg {
+  background-size: 180% 180%;
+  animation: season-shimmer 16s ease-in-out infinite alternate;
+}
+
+html[data-layout='thanksgiving'] .hero-bg {
+  background-size: 150% 150%;
+  animation: season-shimmer 17s ease-in-out infinite alternate;
+}
+
+html[data-layout='diwali'] .btn-primary,
+html[data-layout='new_year'] .btn-primary {
+  animation: season-cta-pulse 2.4s ease-in-out infinite;
+}
+html[data-layout='diwali'] .hero-bg::after,
+html[data-layout='new_year'] .hero-bg::after,
+html[data-layout='ramadan'] .hero-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 15% 20%, color-mix(in srgb, var(--accent) 40%, transparent), transparent 18%),
+    radial-gradient(circle at 85% 25%, color-mix(in srgb, var(--primary) 30%, transparent), transparent 16%);
+  animation: season-bloom-pulse 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+html[data-layout='diwali'] .hero,
+html[data-layout='new_year'] .hero,
+html[data-layout='ramadan'] .hero {
+  position: relative;
+}
+
+html[data-layout='mothers_day'] .product-card:nth-child(even) {
+  animation: season-card-bob 5.4s ease-in-out infinite 0.4s;
+}
+
+/* Sparkle particles need scattered vertical starts */
+.season-fx--sparkle .season-fx__particle {
+  top: calc((var(--i) * 17%) % 90%);
+  left: var(--x);
+  animation-duration: calc(2.2s + (var(--i) * 0.15s));
+  animation-delay: var(--delay);
+}
+
+@media (max-width: 700px) {
+  .season-fx__particle:nth-child(n + 11) { display: none; }
+  .season-fx--rain .season-fx__particle:nth-child(n + 16) { display: none; }
+  html[data-layout='spring'] .product-card,
+  html[data-layout='valentine'] .product-card,
+  html[data-layout='easter'] .product-card,
+  html[data-layout='mothers_day'] .product-card {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .season-fx { display: none !important; }
+
+  html[data-layout='spring'] .hero-bg::after,
+  html[data-layout='winter'] .hero-bg::before,
+  html[data-layout='monsoon'] .hero-bg::before,
+  html[data-layout='halloween'] .hero-bg::after,
+  html[data-layout='diwali'] .hero-bg::after,
+  html[data-layout='new_year'] .hero-bg::after,
+  html[data-layout='ramadan'] .hero-bg::after,
+  html[data-layout='spring'] .product-card,
+  html[data-layout='valentine'] .product-card,
+  html[data-layout='easter'] .product-card,
+  html[data-layout='mothers_day'] .product-card,
+  html[data-layout='summer'] .hero-bg,
+  html[data-layout='autumn'] .hero-bg,
+  html[data-layout='easter'] .hero-bg,
+  html[data-layout='valentine'] .hero-bg,
+  html[data-layout='thanksgiving'] .hero-bg,
+  html[data-layout='christmas'] .site-header,
+  html[data-layout='christmas'] .btn-primary,
+  html[data-layout='diwali'] .btn-primary,
+  html[data-layout='new_year'] .btn-primary,
+  html[data-layout='winter'] .card,
+  html[data-layout='winter'] .product-card,
+  html[data-layout='winter'] .hero-card,
+  html[data-layout='winter'] .category-card,
+  html[data-layout='autumn'] .home-section h2::after {
+    animation: none !important;
+  }
+}

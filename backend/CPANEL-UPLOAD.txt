@@ -1,0 +1,36 @@
+The Tailors Market — cPanel upload
+==================================
+
+1. In cPanel, open File Manager → public_html.
+   Delete the default index.html / index.php if present.
+
+2. Upload cpanel-public_html.zip into public_html and Extract it
+   so that these sit DIRECTLY in public_html (not in a subfolder):
+     .env   .htaccess   app/   bootstrap/   public/   vendor/   ...
+
+3. phpMyAdmin → select database toggfas1_tailorsmarket
+   → Import → database/cpanel-import.sql
+   If the DB already exists from an earlier upload, also run:
+     database/cpanel-marketing-update.sql
+     database/cpanel-rebrand-update.sql
+     database/cpanel-product-gallery-update.sql
+     database/cpanel-theme-branding-update.sql
+     (and database/cpanel-inches-update.sql if sizes were still in mm)
+   Then in Terminal (or SSH): php artisan db:seed --class=CategorySeeder
+
+4. Select PHP 8.1 or 8.2 (MultiPHP Manager) for this domain.
+
+5. In cPanel, turn on Force HTTPS.
+
+6. Folders that must be writable: storage/  and  bootstrap/cache/
+
+Admin login (change after first login):
+  admin@thetailorsmarket.com  /  password123
+
+Users can reset passwords via Forgot password (email OTP).
+Ask them to check spam/junk if the code is delayed.
+
+Mail is sent from info@thetailorsmarket.com.
+
+Flutterwave is still in TEST mode. Switch to live keys in Admin → Settings
+before taking real payments.

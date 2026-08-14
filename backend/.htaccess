@@ -1,0 +1,21 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Block Laravel internals and secrets
+    RewriteRule ^(?i:\.env) - [F,L]
+    RewriteRule ^(app|bootstrap|config|database|resources|routes|storage|tests|vendor)(/|$) - [F,L]
+    RewriteRule ^(artisan|composer\.(json|lock)|phpunit\.xml)(/|$) - [F,L]
+
+    # Point the site at Laravel's public folder (required on cPanel public_html)
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+<IfModule mod_authz_core.c>
+    <FilesMatch "^\.">
+        Require all denied
+    </FilesMatch>
+</IfModule>
+
+Options -Indexes

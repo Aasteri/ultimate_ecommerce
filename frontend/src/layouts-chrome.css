@@ -1,0 +1,741 @@
+/* Deep chrome overrides — buttons, nav, inputs, badges, product media, forms.
+   Applied via html[data-layout="…"] so every major interactive surface changes. */
+
+/* ---------- shared helpers ---------- */
+html[data-layout]:not([data-layout='classic']) .header-nav .nav-link,
+html[data-layout]:not([data-layout='classic']) .header-nav .btn {
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+
+/*
+  Desktop header: layout chrome must not box / inflate nav items.
+  Heavy borders, pill padding, and shadows made links wrap under the brand name.
+*/
+@media (min-width: 901px) {
+  html[data-layout] .site-header .header-inner {
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+
+  html[data-layout] .site-header .header-nav {
+    flex-wrap: nowrap;
+    gap: 8px;
+  }
+
+  html[data-layout] .site-header .header-actions {
+    flex-wrap: nowrap;
+    gap: 8px;
+  }
+
+  html[data-layout] .site-header .header-nav .btn,
+  html[data-layout] .site-header .header-nav .nav-link,
+  html[data-layout] .site-header .header-nav .category-menu-trigger,
+  html[data-layout] .site-header .header-actions .btn {
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    transform: none !important;
+    outline: none;
+    border-width: 0 !important;
+    border-style: solid !important;
+    border-color: transparent !important;
+    background: transparent !important;
+    padding: 8px 12px !important;
+    min-height: 36px;
+    border-radius: 8px !important;
+  }
+
+  html[data-layout] .site-header .header-actions .btn-primary {
+    background: var(--primary) !important;
+    color: var(--on-primary) !important;
+    padding: 8px 14px !important;
+  }
+
+  html[data-layout] .site-header .header-actions .btn-outline {
+    border-width: 1px !important;
+    border-color: var(--border) !important;
+    background: transparent !important;
+    color: inherit !important;
+  }
+
+  html[data-layout] .site-header .header-nav .btn:hover,
+  html[data-layout] .site-header .header-nav .nav-link:hover,
+  html[data-layout] .site-header .header-nav .category-menu-trigger:hover,
+  html[data-layout] .site-header .header-actions .btn-ghost:hover {
+    background: color-mix(in srgb, var(--text) 6%, transparent) !important;
+    text-decoration: none;
+  }
+
+  /* Keep typographic cues, drop boxed hover frames */
+  html[data-layout='atelier'] .site-header .header-nav .nav-link:hover,
+  html[data-layout='atelier'] .site-header .header-nav .btn:hover {
+    outline: none;
+    background: color-mix(in srgb, var(--text) 7%, transparent) !important;
+  }
+
+  html[data-layout='brutalist'] .site-header .header-nav .nav-link,
+  html[data-layout='black_friday'] .site-header .header-nav .nav-link,
+  html[data-layout='editorial'] .site-header .header-nav .nav-link,
+  html[data-layout='cinema'] .site-header .header-nav .nav-link,
+  html[data-layout='runway'] .site-header .header-nav .nav-link {
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 8px 10px !important;
+  }
+
+  html[data-layout='brutalist'] .site-header .header-actions .btn-outline,
+  html[data-layout='black_friday'] .site-header .header-actions .btn-outline {
+    border-color: currentColor !important;
+  }
+
+  html[data-layout='neon'] .site-header .header-nav .nav-link:hover,
+  html[data-layout='neon'] .site-header .header-nav .btn:hover {
+    box-shadow: none !important;
+    background: color-mix(in srgb, var(--accent) 18%, transparent) !important;
+  }
+
+  html[data-layout='glass'] .site-header .header-nav .nav-link,
+  html[data-layout='glass'] .site-header .header-nav .btn-ghost,
+  html[data-layout='silk'] .site-header .header-nav .nav-link,
+  html[data-layout='boutique'] .site-header .header-nav .nav-link {
+    border-radius: 999px !important;
+    padding-inline: 12px !important;
+  }
+}
+
+/* ========== GLASS ========== */
+html[data-layout='glass'] .btn {
+  border-radius: 999px !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid color-mix(in srgb, #fff 40%, transparent) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+html[data-layout='glass'] .btn-primary {
+  background: color-mix(in srgb, var(--primary) 78%, transparent) !important;
+}
+html[data-layout='glass'] .btn-outline {
+  background: color-mix(in srgb, var(--bg-card) 35%, transparent) !important;
+}
+html[data-layout='glass'] .btn-ghost {
+  border-radius: 999px !important;
+  background: color-mix(in srgb, #fff 12%, transparent);
+}
+html[data-layout='glass'] .input,
+html[data-layout='glass'] select.input,
+html[data-layout='glass'] textarea.input {
+  border-radius: 999px !important;
+  padding-inline: 18px;
+  background: color-mix(in srgb, var(--bg-card) 45%, transparent) !important;
+  backdrop-filter: blur(12px);
+  border-color: color-mix(in srgb, #fff 40%, var(--border)) !important;
+}
+html[data-layout='glass'] textarea.input { border-radius: 22px !important; }
+html[data-layout='glass'] .badge {
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+  border: 1px solid color-mix(in srgb, #fff 35%, transparent);
+}
+html[data-layout='glass'] .header-nav .nav-link,
+html[data-layout='glass'] .header-nav .btn-ghost {
+  border-radius: 999px;
+  padding-inline: 14px;
+}
+html[data-layout='glass'] .header-nav .nav-link:hover,
+html[data-layout='glass'] .header-nav .btn-ghost:hover {
+  background: color-mix(in srgb, #fff 22%, transparent);
+}
+html[data-layout='glass'] .product-card-media {
+  border-radius: 22px;
+  overflow: hidden;
+  margin: 10px;
+}
+html[data-layout='glass'] .product-card-price {
+  font-size: 1.15rem;
+}
+html[data-layout='glass'] .newsletter-form .btn-primary {
+  border-radius: 999px !important;
+}
+
+/* ========== EDITORIAL ========== */
+html[data-layout='editorial'] .btn {
+  border-radius: 0 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 12px;
+  padding: 14px 22px;
+  border-width: 2px !important;
+}
+html[data-layout='editorial'] .btn-primary {
+  background: var(--text) !important;
+  color: var(--bg) !important;
+  border-color: var(--text) !important;
+}
+html[data-layout='editorial'] .btn-primary:hover {
+  background: var(--primary) !important;
+  border-color: var(--primary) !important;
+}
+html[data-layout='editorial'] .btn-outline {
+  border-color: var(--text) !important;
+  color: var(--text) !important;
+}
+html[data-layout='editorial'] .input {
+  border-radius: 0 !important;
+  border-width: 0 0 2px 0 !important;
+  border-color: var(--text) !important;
+  background: transparent !important;
+  padding-left: 0;
+}
+html[data-layout='editorial'] .badge {
+  border-radius: 0;
+  border: 1px solid var(--text);
+  background: transparent;
+  color: var(--text);
+  letter-spacing: 0.1em;
+}
+html[data-layout='editorial'] .header-nav .nav-link {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 12px;
+  font-weight: 700;
+}
+html[data-layout='editorial'] .product-card-media {
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+}
+html[data-layout='editorial'] .product-card-media img {
+  height: 100%;
+  object-fit: cover;
+  filter: contrast(1.05);
+}
+html[data-layout='editorial'] .product-card-title {
+  font-size: 1.25rem;
+  letter-spacing: -0.03em;
+}
+html[data-layout='editorial'] .product-card-price {
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ========== ATELIER ========== */
+html[data-layout='atelier'] .btn {
+  border-radius: 2px !important;
+  border: 2px solid var(--text) !important;
+  font-weight: 700;
+}
+html[data-layout='atelier'] .btn-primary {
+  box-shadow: 4px 4px 0 var(--text) !important;
+}
+html[data-layout='atelier'] .btn-outline {
+  background: var(--bg-card);
+  box-shadow: 3px 3px 0 color-mix(in srgb, var(--primary) 30%, transparent);
+}
+html[data-layout='atelier'] .btn-ghost {
+  border: 2px dashed var(--border) !important;
+  border-radius: 2px !important;
+}
+html[data-layout='atelier'] .input {
+  border-radius: 2px !important;
+  border: 2px solid var(--text) !important;
+  box-shadow: 3px 3px 0 color-mix(in srgb, var(--primary) 18%, transparent);
+}
+html[data-layout='atelier'] .badge {
+  border-radius: 2px;
+  border: 1.5px solid var(--text);
+  background: var(--accent-light);
+}
+html[data-layout='atelier'] .header-nav .nav-link:hover {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
+html[data-layout='atelier'] .product-card-media {
+  border-bottom: 2px solid var(--text);
+}
+
+/* ========== BRUTALIST ========== */
+html[data-layout='brutalist'] .btn {
+  border-radius: 0 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 800;
+  border: 3px solid var(--text) !important;
+  padding: 12px 18px;
+}
+html[data-layout='brutalist'] .btn-primary {
+  background: var(--accent) !important;
+  color: var(--text) !important;
+  box-shadow: 6px 6px 0 var(--text) !important;
+}
+html[data-layout='brutalist'] .btn-outline {
+  background: var(--bg);
+  color: var(--text) !important;
+  box-shadow: 4px 4px 0 var(--text);
+}
+html[data-layout='brutalist'] .btn-ghost {
+  border: 3px solid currentColor !important;
+  border-radius: 0 !important;
+  color: inherit !important;
+}
+html[data-layout='brutalist'] .input {
+  border-radius: 0 !important;
+  border: 3px solid var(--text) !important;
+  font-weight: 600;
+}
+html[data-layout='brutalist'] .badge {
+  border-radius: 0;
+  border: 2px solid var(--text);
+  text-transform: uppercase;
+}
+html[data-layout='brutalist'] .header-nav .nav-link {
+  text-transform: uppercase;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  border: 2px solid transparent;
+  padding: 6px 10px;
+}
+html[data-layout='brutalist'] .header-nav .nav-link:hover {
+  border-color: currentColor;
+}
+html[data-layout='brutalist'] .product-card-media {
+  border-bottom: 4px solid var(--text);
+  filter: grayscale(0.15) contrast(1.1);
+}
+html[data-layout='brutalist'] .product-card-price {
+  font-size: 1.35rem;
+  font-weight: 900;
+}
+
+/* ========== NEON ========== */
+html[data-layout='neon'] .btn {
+  border-radius: 10px !important;
+  border: 1px solid color-mix(in srgb, var(--accent) 70%, transparent) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+html[data-layout='neon'] .btn-primary {
+  box-shadow: 0 0 18px color-mix(in srgb, var(--primary) 55%, transparent), inset 0 0 12px color-mix(in srgb, var(--accent) 15%, transparent) !important;
+}
+html[data-layout='neon'] .btn-outline {
+  color: #f4f7fb !important;
+  background: transparent !important;
+  box-shadow: 0 0 14px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+html[data-layout='neon'] .btn-ghost {
+  color: #dbe4f0 !important;
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent) !important;
+  border-radius: 10px !important;
+}
+html[data-layout='neon'] .input {
+  border-radius: 10px !important;
+  background: rgba(8, 12, 20, 0.75) !important;
+  color: #f4f7fb !important;
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent) !important;
+  box-shadow: 0 0 16px color-mix(in srgb, var(--primary) 18%, transparent);
+}
+html[data-layout='neon'] .badge {
+  border: 1px solid color-mix(in srgb, var(--accent) 60%, transparent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 30%, transparent);
+  color: #f4f7fb;
+  background: rgba(0, 0, 0, 0.35);
+}
+html[data-layout='neon'] .header-nav .nav-link {
+  color: #e8eef8 !important;
+  border-radius: 8px;
+}
+html[data-layout='neon'] .header-nav .nav-link:hover {
+  box-shadow: 0 0 16px color-mix(in srgb, var(--accent) 40%, transparent);
+  color: #fff !important;
+}
+html[data-layout='neon'] .product-card-media {
+  border-radius: 12px 12px 0 0;
+  box-shadow: inset 0 0 30px color-mix(in srgb, var(--primary) 25%, transparent);
+}
+html[data-layout='neon'] .product-card-title,
+html[data-layout='neon'] .product-card-price,
+html[data-layout='neon'] .muted-line {
+  color: #eef3fa;
+}
+
+/* ========== SILK ========== */
+html[data-layout='silk'] .btn {
+  border-radius: 999px !important;
+  padding-inline: 24px;
+  font-weight: 600;
+}
+html[data-layout='silk'] .btn-primary {
+  box-shadow: 0 14px 30px color-mix(in srgb, var(--primary) 28%, transparent) !important;
+}
+html[data-layout='silk'] .btn-outline {
+  border-width: 2px !important;
+}
+html[data-layout='silk'] .input {
+  border-radius: 999px !important;
+  padding-inline: 18px;
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border)) !important;
+}
+html[data-layout='silk'] textarea.input { border-radius: 24px !important; }
+html[data-layout='silk'] .badge {
+  border-radius: 999px;
+  padding: 4px 12px;
+  background: color-mix(in srgb, var(--accent-light) 80%, var(--bg-card));
+}
+html[data-layout='silk'] .header-nav .nav-link {
+  border-radius: 999px;
+  padding-inline: 14px;
+}
+html[data-layout='silk'] .product-card-media {
+  border-radius: 28px;
+  overflow: hidden;
+  margin: 12px;
+  aspect-ratio: 1;
+}
+html[data-layout='silk'] .product-card-media img { height: 100%; object-fit: cover; }
+
+/* ========== IMAGE LAYOUTS — chrome ========== */
+html[data-layout='cinema'] .btn,
+html[data-layout='runway'] .btn,
+html[data-layout='split_stage'] .btn {
+  border-radius: 2px !important;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 12px 20px;
+}
+html[data-layout='cinema'] .btn-primary,
+html[data-layout='runway'] .btn-primary {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35) !important;
+}
+html[data-layout='cinema'] .btn-outline,
+html[data-layout='runway'] .btn-outline {
+  background: color-mix(in srgb, var(--bg-card) 35%, transparent) !important;
+  backdrop-filter: blur(10px);
+  border-width: 2px !important;
+}
+html[data-layout='cinema'] .input,
+html[data-layout='runway'] .input,
+html[data-layout='split_stage'] .input {
+  border-radius: 2px !important;
+  background: color-mix(in srgb, var(--bg-card) 70%, transparent) !important;
+  backdrop-filter: blur(8px);
+}
+html[data-layout='cinema'] .badge,
+html[data-layout='runway'] .badge {
+  border-radius: 2px;
+  letter-spacing: 0.08em;
+}
+html[data-layout='cinema'] .header-nav .nav-link,
+html[data-layout='runway'] .header-nav .nav-link {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 12px;
+  font-weight: 700;
+}
+html[data-layout='cinema'] .product-card-media,
+html[data-layout='runway'] .product-card-media {
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+}
+html[data-layout='cinema'] .product-card-media img,
+html[data-layout='runway'] .product-card-media img {
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.45s ease;
+}
+html[data-layout='cinema'] .product-card:hover .product-card-media img,
+html[data-layout='runway'] .product-card:hover .product-card-media img {
+  transform: scale(1.06);
+}
+
+html[data-layout='boutique'] .btn,
+html[data-layout='gallery_wall'] .btn,
+html[data-layout='parallax_loom'] .btn {
+  border-radius: 999px !important;
+  padding-inline: 22px;
+}
+html[data-layout='boutique'] .btn-outline,
+html[data-layout='gallery_wall'] .btn-outline {
+  background: color-mix(in srgb, var(--bg-card) 55%, transparent) !important;
+  backdrop-filter: blur(8px);
+}
+html[data-layout='boutique'] .input,
+html[data-layout='gallery_wall'] .input,
+html[data-layout='parallax_loom'] .input {
+  border-radius: 999px !important;
+  background: color-mix(in srgb, var(--bg-card) 75%, transparent) !important;
+}
+html[data-layout='boutique'] textarea.input,
+html[data-layout='gallery_wall'] textarea.input { border-radius: 22px !important; }
+html[data-layout='boutique'] .badge,
+html[data-layout='gallery_wall'] .badge {
+  border-radius: 999px;
+}
+html[data-layout='boutique'] .product-card-media,
+html[data-layout='gallery_wall'] .product-card-media,
+html[data-layout='parallax_loom'] .product-card-media {
+  border-radius: 22px;
+  overflow: hidden;
+  margin: 12px;
+}
+
+/* ========== SEASONS — chrome ========== */
+html[data-layout='spring'] .btn,
+html[data-layout='summer'] .btn,
+html[data-layout='easter'] .btn,
+html[data-layout='mothers_day'] .btn,
+html[data-layout='valentine'] .btn {
+  border-radius: 999px !important;
+  padding-inline: 22px;
+}
+html[data-layout='spring'] .btn-primary,
+html[data-layout='summer'] .btn-primary {
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--primary) 25%, transparent) !important;
+}
+html[data-layout='spring'] .input,
+html[data-layout='summer'] .input,
+html[data-layout='valentine'] .input,
+html[data-layout='easter'] .input,
+html[data-layout='mothers_day'] .input {
+  border-radius: 999px !important;
+}
+html[data-layout='spring'] textarea.input,
+html[data-layout='summer'] textarea.input,
+html[data-layout='valentine'] textarea.input { border-radius: 20px !important; }
+html[data-layout='spring'] .badge,
+html[data-layout='summer'] .badge,
+html[data-layout='valentine'] .badge {
+  border-radius: 999px;
+}
+html[data-layout='spring'] .header-nav .nav-link:hover,
+html[data-layout='summer'] .header-nav .nav-link:hover {
+  background: var(--accent-light);
+  border-radius: 999px;
+}
+html[data-layout='spring'] .product-card-media,
+html[data-layout='summer'] .product-card-media {
+  border-radius: 20px 20px 8px 20px;
+  overflow: hidden;
+  margin: 10px;
+}
+
+html[data-layout='autumn'] .btn,
+html[data-layout='thanksgiving'] .btn {
+  border-radius: 10px 22px 10px 22px !important;
+  border-width: 2px !important;
+  font-weight: 700;
+}
+html[data-layout='autumn'] .btn-primary,
+html[data-layout='thanksgiving'] .btn-primary {
+  box-shadow: 5px 5px 0 color-mix(in srgb, var(--accent) 40%, transparent) !important;
+}
+html[data-layout='autumn'] .input,
+html[data-layout='thanksgiving'] .input {
+  border-radius: 10px 18px !important;
+  border-width: 2px !important;
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border)) !important;
+}
+html[data-layout='autumn'] .badge,
+html[data-layout='thanksgiving'] .badge {
+  border-radius: 8px 16px;
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--border));
+}
+html[data-layout='autumn'] .product-card-media {
+  border-radius: 10px 24px 10px 24px;
+  overflow: hidden;
+}
+
+html[data-layout='winter'] .btn {
+  border-radius: 12px !important;
+  border-width: 2px !important;
+}
+html[data-layout='winter'] .btn-outline {
+  background: color-mix(in srgb, #fff 55%, transparent) !important;
+  backdrop-filter: blur(6px);
+}
+html[data-layout='winter'] .input {
+  border-radius: 12px !important;
+  background: color-mix(in srgb, #fff 70%, var(--bg-card)) !important;
+  border-color: color-mix(in srgb, #fff 60%, var(--border)) !important;
+}
+html[data-layout='winter'] .badge {
+  border-radius: 8px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+html[data-layout='winter'] .product-card-media {
+  border-radius: 14px;
+  overflow: hidden;
+  margin: 10px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+}
+
+html[data-layout='monsoon'] .btn {
+  border-radius: 14px !important;
+  backdrop-filter: blur(6px);
+}
+html[data-layout='monsoon'] .btn-primary {
+  box-shadow: 0 14px 30px color-mix(in srgb, var(--primary) 30%, transparent) !important;
+}
+html[data-layout='monsoon'] .input {
+  border-radius: 14px !important;
+  background: color-mix(in srgb, var(--bg-card) 70%, transparent) !important;
+  backdrop-filter: blur(8px);
+}
+html[data-layout='monsoon'] .badge {
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--bg-card) 60%, transparent);
+  backdrop-filter: blur(6px);
+}
+
+/* ========== HOLIDAYS — chrome ========== */
+html[data-layout='christmas'] .btn {
+  border-radius: 8px !important;
+  border: 2px solid color-mix(in srgb, var(--accent) 55%, var(--border)) !important;
+  font-weight: 700;
+}
+html[data-layout='christmas'] .btn-primary {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 18%, transparent), 0 10px 0 color-mix(in srgb, var(--primary) 20%, transparent) !important;
+}
+html[data-layout='christmas'] .input {
+  border-radius: 8px !important;
+  border: 2px solid color-mix(in srgb, var(--accent) 45%, var(--border)) !important;
+}
+html[data-layout='christmas'] .badge {
+  border: 1px solid color-mix(in srgb, var(--accent) 50%, var(--border));
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 12%, transparent);
+}
+html[data-layout='christmas'] .header-nav .nav-link:hover {
+  background: color-mix(in srgb, var(--accent-light) 80%, var(--primary));
+  border-radius: 8px;
+}
+
+html[data-layout='halloween'] .btn {
+  border-radius: 2px 16px 2px 16px !important;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-weight: 800;
+}
+html[data-layout='halloween'] .btn-primary {
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35) !important;
+}
+html[data-layout='halloween'] .input {
+  border-radius: 2px 14px !important;
+  border: 2px solid color-mix(in srgb, var(--accent) 45%, var(--border)) !important;
+}
+html[data-layout='halloween'] .badge {
+  border-radius: 2px 10px;
+  transform: rotate(-1deg);
+}
+html[data-layout='halloween'] .product-card-media {
+  clip-path: polygon(0 0, 100% 0, 100% 92%, 96% 100%, 0 100%);
+}
+
+html[data-layout='new_year'] .btn,
+html[data-layout='diwali'] .btn {
+  border-radius: 12px !important;
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent) !important;
+}
+html[data-layout='new_year'] .btn-primary,
+html[data-layout='diwali'] .btn-primary {
+  box-shadow: 0 0 26px color-mix(in srgb, var(--primary) 45%, transparent) !important;
+}
+html[data-layout='new_year'] .input,
+html[data-layout='diwali'] .input {
+  border-radius: 12px !important;
+  box-shadow: 0 0 16px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+html[data-layout='new_year'] .badge,
+html[data-layout='diwali'] .badge {
+  box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+html[data-layout='ramadan'] .btn {
+  border-radius: 999px 999px 22px 22px !important;
+  padding-inline: 22px;
+}
+html[data-layout='ramadan'] .input {
+  border-radius: 14px 14px 24px 24px !important;
+}
+html[data-layout='ramadan'] .badge {
+  border-radius: 999px 999px 10px 10px;
+}
+html[data-layout='ramadan'] .product-card-media {
+  border-radius: 14px 14px 40px 40px;
+  overflow: hidden;
+}
+
+html[data-layout='black_friday'] .btn {
+  border-radius: 0 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 900;
+  border: 3px solid var(--text) !important;
+}
+html[data-layout='black_friday'] .btn-primary {
+  background: var(--accent) !important;
+  color: var(--text) !important;
+  box-shadow: 6px 6px 0 var(--text) !important;
+}
+html[data-layout='black_friday'] .btn-outline {
+  background: var(--bg);
+  box-shadow: 4px 4px 0 var(--text);
+}
+html[data-layout='black_friday'] .input {
+  border-radius: 0 !important;
+  border: 3px solid var(--text) !important;
+  font-weight: 700;
+}
+html[data-layout='black_friday'] .badge {
+  border-radius: 0;
+  border: 2px solid var(--text);
+  background: var(--accent);
+  color: var(--text);
+  text-transform: uppercase;
+}
+html[data-layout='black_friday'] .header-nav .nav-link {
+  text-transform: uppercase;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+html[data-layout='black_friday'] .product-card-media {
+  border-bottom: 4px solid var(--text);
+  filter: contrast(1.08);
+}
+html[data-layout='black_friday'] .product-card-price {
+  font-size: 1.4rem;
+  font-weight: 900;
+}
+
+html[data-layout='editorial'] .hero-badge,
+html[data-layout='brutalist'] .hero-badge,
+html[data-layout='black_friday'] .hero-badge,
+html[data-layout='cinema'] .hero-badge,
+html[data-layout='runway'] .hero-badge {
+  border-radius: 0 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 8px 12px;
+}
+html[data-layout='glass'] .hero-badge,
+html[data-layout='silk'] .hero-badge,
+html[data-layout='boutique'] .hero-badge,
+html[data-layout='spring'] .hero-badge,
+html[data-layout='summer'] .hero-badge {
+  border-radius: 999px !important;
+  backdrop-filter: blur(8px);
+  padding: 8px 14px;
+}
+html[data-layout='neon'] .hero-badge {
+  border: 1px solid color-mix(in srgb, var(--accent) 70%, transparent);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--accent) 40%, transparent);
+  border-radius: 8px !important;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+html[data-layout='atelier'] .hero-badge {
+  border: 2px solid var(--text);
+  border-radius: 2px !important;
+  background: var(--bg-card);
+}
